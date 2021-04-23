@@ -4,23 +4,35 @@ import {useEffect, useState} from "react";
 const OrderListView = () => {
 
     const [orders, setOrders] = useState([])
-    const [showText, setShowText] = useState(false)
 
     useEffect(() => {
         getAllOrders().then(setOrders);
     }, [])
 
     return (
-        <>
-            {
-                orders.map((o,idx) =>
-                    <div key={idx}>{o.id}</div>)
-            }
-            <button onClick={() => setShowText(true)}>Add order</button>
-            {
-                showText ? <div>ADDED</div> : null
-            }
-        </>
+        <div>
+            <table>
+                <caption>Orders</caption>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {
+                    orders.map((o) => {
+                        return (
+                            <tr key={o.id}>
+                                <td>{o.id}</td>
+                                <td>{o.price}</td>
+                            </tr>
+                        )
+                    })
+                }
+                </tbody>
+            </table>
+        </div>
     )
 }
 

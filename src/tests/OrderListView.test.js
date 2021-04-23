@@ -3,15 +3,17 @@ import App from "../App";
 import * as OrderRepository from './OrderRepository'
 
 describe('OrderListView page', () => {
-  it('shows a list of orders with id', async () => {
+  it('renders a list of orders', async () => {
     jest.spyOn(OrderRepository, 'getAllOrders')
         .mockReturnValueOnce(
             Promise.resolve([
                 {
                     id: 'order1',
+                    price: 100
                 },
                 {
                     id: 'order2',
+                    price: 200
                 }
         ]))
 
@@ -20,32 +22,35 @@ describe('OrderListView page', () => {
 
 
     await waitFor(() => {
-      expect(screen.getByText('order1')).toBeInTheDocument()
-      expect(screen.getByText('order2')).toBeInTheDocument()
+        expect(screen.getByText('order1')).toBeInTheDocument()
+        expect(screen.getByText('order2')).toBeInTheDocument()
+        expect(screen.getByText('100')).toBeInTheDocument()
+        expect(screen.getByText('200')).toBeInTheDocument()
     })
   });
 
-    it('shows a button to add order', () => {
+    it('renders table name and columns', async () => {
         jest.spyOn(OrderRepository, 'getAllOrders')
-            .mockReturnValueOnce(Promise.resolve([]))
+            .mockReturnValueOnce(
+                Promise.resolve([
+                    {
+                        id: 'order1',
+                        price: 100
+                    },
+                    {
+                        id: 'order2',
+                        price: 200
+                    }
+                ]))
 
 
         render(<App />)
 
 
-        expect(screen.getByText('Add order')).toBeInTheDocument()
-    });
-
-    it('click Add order button and "ADDED" text', function () {
-        jest.spyOn(OrderRepository, 'getAllOrders')
-            .mockReturnValueOnce(Promise.resolve([]))
-        render(<App />)
-        const addOrderButton = screen.getByText('Add order');
-
-
-        fireEvent.click(addOrderButton);
-
-
-        expect(screen.getByText('ADDED')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Orders')).toBeInTheDocument()
+            expect(screen.getByText('Id')).toBeInTheDocument()
+            expect(screen.getByText('Price')).toBeInTheDocument()
+        })
     });
 });
