@@ -1,12 +1,9 @@
 import {getAllOrders} from "./tests/OrderRepository";
 import {useEffect, useState} from "react";
-import OrderDetailView from "./OrderDetailView";
 
-const OrderListView = () => {
+const OrderListView = (props) => {
 
     const [orders, setOrders] = useState([])
-    const [showDetail, setShowDetail] = useState(false);
-    const [selectedId, setSelectedId] = useState('');
 
     useEffect(() => {
         getAllOrders().then(setOrders)
@@ -14,8 +11,7 @@ const OrderListView = () => {
 
 
     const toggleShowDetail = (orderId) => {
-        setShowDetail(true);
-        setSelectedId(orderId);
+        props.history.push({pathname: '/' + orderId})
     }
 
     return (
@@ -55,16 +51,6 @@ const OrderListView = () => {
                 }
                 </tbody>
             </table>
-
-            {
-                showDetail ?
-                (<div>
-                    <p>Selected Id: {selectedId}</p>
-                    <OrderDetailView />
-                </div>)
-                : null
-            }
-
         </div>
     )
 }

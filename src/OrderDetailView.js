@@ -6,10 +6,8 @@ const OrderDetailView = (props) => {
     const [items, setItems] = useState([])
 
     useEffect(() => {
-        getOrder(props.orderId)
+        getOrder(props.match.params.id)
             .then(response => setItems(response.items))
-
-
     }, [])
 
     return (

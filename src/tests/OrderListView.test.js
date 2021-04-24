@@ -1,6 +1,7 @@
 import {fireEvent, render, screen, waitFor} from '@testing-library/react';
 import App from "../App";
 import * as OrderRepository from './OrderRepository'
+import {MemoryRouter} from "react-router";
 
 describe('Order List View page', () => {
     beforeEach(() => {
@@ -53,33 +54,42 @@ describe('Order List View page', () => {
         await waitFor(() => expect(screen.queryAllByText('More').length).toBe(2))
     });
 
-    it('renders order detail when the button is clicked', async () => {
-        jest.spyOn(OrderRepository, 'getOrder')
-            .mockReturnValue(Promise.resolve({items: []}))
-        render(<App />)
-        await waitFor(() => screen.queryAllByText('More'))
-
-
-        fireEvent.click(screen.queryAllByText('More')[0])
-
-
-        await waitFor(() => {
-            expect(screen.getByText(/Selected Id/)).toHaveTextContent('order1');
-        })
-    });
-
-    it('renders order detail when a row is clicked', async () => {
+    it('routes to OrderDetailView when clicking a row', async () => {
         jest.spyOn(OrderRepository, 'getOrder')
             .mockReturnValue(Promise.resolve({items: []}))
 
+        render(
+            <MemoryRouter>
+                <App />
+            </MemoryRouter>
+        )
 
-        render(<App/>)
+
         await waitFor(() => screen.getByText('100'))
         fireEvent.click(screen.getByText('100'))
 
 
         await waitFor(() => {
-            expect(screen.getByText(/Selected Id/)).toHaveTextContent('order1');
+            expect(screen.getByText('Order Details')).toBeInTheDocument()
         })
-    })
+    });
+
+    // it('routes to OrderDetailView when the button is clicked', async () => {
+    //     jest.spyOn(OrderRepository, 'getOrder')
+    //         .mockReturnValue(Promise.resolve({items: []}))
+    //     render(
+    //         <MemoryRouter initialEntries={['']}>
+    //             <App />
+    //         </MemoryRouter>
+    //     )
+    //
+    //     await waitFor(() =>
+    //         expect(screen.queryAllByText('More').length).toBe(2))
+    //     fireEvent.click(screen.queryAllByText('More')[0])
+    //
+    //
+    //     await waitFor(() => {
+    //         expect(screen.getByText('Order Details')).toBeInTheDocument()
+    //     })
+    // });
 });
