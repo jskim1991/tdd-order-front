@@ -1,6 +1,7 @@
 import {render, screen, waitFor} from "@testing-library/react";
 import OrderDetailView from "../OrderDetailView";
 import * as OrderRepository from './OrderRepository'
+import * as ReactRouter from 'react-router'
 
 describe('Order Detail View page', () => {
 
@@ -12,7 +13,9 @@ describe('Order Detail View page', () => {
         jest.spyOn(OrderRepository, 'getOrder')
             .mockReturnValueOnce(Promise.resolve([]))
 
-        render(<OrderDetailView />)
+
+        render(<OrderDetailView match={{params: {id: '1'}}} />)
+
 
         await waitFor(() => {
             expect(screen.getByText('Order Details')).toBeInTheDocument()
@@ -43,7 +46,7 @@ describe('Order Detail View page', () => {
             }))
 
 
-        render(<OrderDetailView orderId='111'/>)
+        render(<OrderDetailView match={{params: {id: '1'}}}/>)
 
 
         await waitFor(() => {
