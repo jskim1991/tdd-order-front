@@ -1,21 +1,19 @@
-import {render, screen, waitFor} from "@testing-library/react";
-import OrderDetailView from "../OrderDetailView";
+import { render, screen, waitFor } from '@testing-library/react'
+import OrderDetailView from '../OrderDetailView'
 import * as OrderRepository from './OrderRepository'
-import * as ReactRouter from 'react-router'
 
 describe('Order Detail View page', () => {
-
     afterEach(() => {
         jest.restoreAllMocks()
-    });
+    })
 
     it('shows required fields', async () => {
-        jest.spyOn(OrderRepository, 'getOrder')
-            .mockReturnValueOnce(Promise.resolve([]))
+        jest.spyOn(OrderRepository, 'getOrder').mockReturnValueOnce(
+            Promise.resolve([])
+        )
 
-
-        render(<OrderDetailView match={{params: {id: '1'}}} />)
-
+        // render(<OrderDetailView match={{ params: { id: '1' } }} />)
+        render(<OrderDetailView id='123' />)
 
         await waitFor(() => {
             expect(screen.getByText('Order Details')).toBeInTheDocument()
@@ -26,28 +24,28 @@ describe('Order Detail View page', () => {
             expect(screen.getByText('Phone')).toBeInTheDocument()
             expect(screen.getByText('Address')).toBeInTheDocument()
         })
-    });
+    })
 
     it('renders a table of items', async () => {
-        jest.spyOn(OrderRepository, 'getOrder')
-            .mockReturnValueOnce(Promise.resolve({
+        jest.spyOn(OrderRepository, 'getOrder').mockReturnValueOnce(
+            Promise.resolve({
                 items: [
                     {
                         product: 'item1',
                         price: 100,
-                        quantity: 1
+                        quantity: 1,
                     },
                     {
                         product: 'item2',
                         price: 100,
-                        quantity: 1
-                    }
-                ]
-            }))
+                        quantity: 1,
+                    },
+                ],
+            })
+        )
 
-
-        render(<OrderDetailView match={{params: {id: '1'}}}/>)
-
+        // render(<OrderDetailView match={{ params: { id: '1' } }} />)
+        render(<OrderDetailView id='123' />)
 
         await waitFor(() => {
             expect(screen.getByText('Item Name')).toBeInTheDocument()
@@ -59,5 +57,5 @@ describe('Order Detail View page', () => {
             expect(screen.queryAllByText('100').length).toBe(2)
             expect(screen.queryAllByText('1').length).toBe(2)
         })
-    });
+    })
 })
