@@ -1,4 +1,11 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    waitForElementToBeRemoved,
+} from '@testing-library/react'
 import App from '../App'
 import * as OrderRepository from './OrderRepository'
 import { MemoryRouter } from 'react-router'
@@ -6,7 +13,7 @@ import userEvent from '@testing-library/user-event'
 
 describe('Order List View page', () => {
     beforeEach(() => {
-        jest.spyOn(OrderRepository, 'getAllOrders').mockReturnValueOnce(
+        jest.spyOn(OrderRepository, 'getAllOrders').mockReturnValue(
             Promise.resolve([
                 {
                     id: 'order1',
@@ -53,13 +60,24 @@ describe('Order List View page', () => {
     })
 
     it('shows order detail view when clicking a row', async () => {
+        jest.spyOn(OrderRepository, 'getAllOrders').mockReturnValue(
+            Promise.resolve([
+                {
+                    id: 'order1',
+                    items: ['item1'],
+                    price: 100,
+                },
+            ])
+        )
+
         render(<App />)
 
-        const buttons = await screen.findAllByRole('button', { name: 'More' })
+        expect(
+            await screen.findByRole('button', { name: 'More' })
+        ).toBeInTheDocument()
+        fireEvent.click(screen.getByText('More'))
 
-        fireEvent.click(buttons[0])
-
-        expect(await screen.findByText('Order Details')).toBeInTheDocument()
+        expect(screen.getByText('Order Details')).toBeInTheDocument()
     })
 
     it('shows a text input to search for a specific order', async () => {
@@ -71,14 +89,16 @@ describe('Order List View page', () => {
     })
 
     it('shows matching orders when item name matches', async () => {
-        render(<App />)
+        await act(async () => {
+            render(<App />)
+        })
 
         userEvent.type(
             screen.getByPlaceholderText('Search order here'),
             'item1'
         )
 
-        expect(await screen.findByText('order1')).toBeInTheDocument()
+        expect(screen.getByText('order1')).toBeInTheDocument()
         expect(screen.queryByText('order2')).not.toBeInTheDocument()
     })
 

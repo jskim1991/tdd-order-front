@@ -5,7 +5,7 @@ import OrderDetailView from './OrderDetailView'
 const OrderListView = (props) => {
     const [orders, setOrders] = useState([])
     const [showDetail, setShowDetail] = useState(false)
-    const [searchText, setSearchText] = useState(null)
+    const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
         getAllOrders().then(setOrders)
@@ -16,33 +16,32 @@ const OrderListView = (props) => {
     }
 
     const onChangeSearchText = (event) => {
-        setSearchText(event.target.value)
+        if (event.target.value.trim().length > 0 && orders.length > 0) {
+            const filteredOrders = orders.filter((order) => {
+                let matched = false
+                for (let item of order.items) {
+                    if (
+                        item
+                            .toLowerCase()
+                            .indexOf(event.target.value.toLowerCase()) !== -1
+                    ) {
+                        matched = true
+                        break
+                    }
+                }
+                return matched
+            })
+            setOrders(filteredOrders)
+        }
     }
-
-    const filteredOrders = searchText
-        ? orders.filter((order) => {
-              let matched = false
-              for (let item of order.items) {
-                  if (
-                      item.toLowerCase().indexOf(searchText.toLowerCase()) !==
-                      -1
-                  ) {
-                      matched = true
-                      break
-                  }
-              }
-              return matched
-          })
-        : orders
 
     return (
         <div>
-            <form>
-                <input
-                    placeholder='Search order here'
-                    onChange={(event) => onChangeSearchText(event)}
-                ></input>
-            </form>
+            <input
+                placeholder='Search order here'
+                onChange={(event) => onChangeSearchText(event)}
+                // value={searchText}
+            ></input>
             <h1>Order History</h1>
             <table>
                 <caption>Orders</caption>
@@ -57,8 +56,8 @@ const OrderListView = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Array.isArray(filteredOrders)
-                        ? filteredOrders.map((o, idx) => {
+                    {Array.isArray(orders)
+                        ? orders.map((o, idx) => {
                               return (
                                   <tr
                                       key={o.id}
@@ -67,11 +66,11 @@ const OrderListView = (props) => {
                                       <td>{idx}</td>
                                       <td>{o.id}</td>
                                       <td></td>
-                                      <td></td>
+                                      <td>{o.items}</td>
                                       <td>{o.price}</td>
                                       <td>
                                           <button
-                                              //   type='button'
+                                              type='button'
                                               id={'order-detail-button-' + o.id}
                                               onClick={() =>
                                                   setShowDetail(true)
