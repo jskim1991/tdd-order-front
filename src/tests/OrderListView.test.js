@@ -1,11 +1,4 @@
-import {
-    act,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-    waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import App from '../App'
 import * as OrderRepository from './OrderRepository'
 import { MemoryRouter } from 'react-router'
@@ -30,9 +23,11 @@ describe('Order List View page', () => {
     })
 
     it('renders a list of orders', async () => {
-        render(<App />)
+        await act(async () => {
+            render(<App />)
+        })
 
-        expect(await screen.findByText('order1')).toBeInTheDocument()
+        expect(screen.getByText('order1')).toBeInTheDocument()
         expect(screen.getByText('order2')).toBeInTheDocument()
         expect(screen.getByText('100')).toBeInTheDocument()
         expect(screen.getByText('200')).toBeInTheDocument()
@@ -42,9 +37,7 @@ describe('Order List View page', () => {
         render(<App />)
 
         expect(await screen.findByText('Order History')).toBeInTheDocument()
-
         expect(screen.getByText('Orders')).toBeInTheDocument()
-
         expect(screen.getByText('No')).toBeInTheDocument()
         expect(screen.getByText('Id')).toBeInTheDocument()
         expect(screen.getByText('Date')).toBeInTheDocument()
@@ -70,12 +63,10 @@ describe('Order List View page', () => {
             ])
         )
 
-        render(<App />)
-
-        expect(
-            await screen.findByRole('button', { name: 'More' })
-        ).toBeInTheDocument()
-        fireEvent.click(screen.getByText('More'))
+        await act(async () => {
+            render(<App />)
+        })
+        fireEvent.click(screen.getByRole('button', { name: 'More' }))
 
         expect(screen.getByText('Order Details')).toBeInTheDocument()
     })
