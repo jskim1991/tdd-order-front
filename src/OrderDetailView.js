@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { getOrder } from './tests/OrderRepository'
 
-const OrderDetailView = (props) => {
+const OrderDetailView = () => {
     const [items, setItems] = useState([])
 
+    const { orderId } = useParams()
+
     useEffect(() => {
-        getOrder(props.id).then((response) => setItems(response.items))
+        getOrder(orderId).then((response) => setItems(response.items))
     }, [])
 
     return (
@@ -21,17 +24,16 @@ const OrderDetailView = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Array.isArray(items) && items.length > 0
-                        ? items.map((it, idx) => {
-                              return (
-                                  <tr key={idx}>
-                                      <td>{it.product}</td>
-                                      <td>{it.price}</td>
-                                      <td>{it.quantity}</td>
-                                  </tr>
-                              )
-                          })
-                        : false}
+                    {items &&
+                        items.map((it, idx) => {
+                            return (
+                                <tr key={idx}>
+                                    <td>{it.product}</td>
+                                    <td>{it.price}</td>
+                                    <td>{it.quantity}</td>
+                                </tr>
+                            )
+                        })}
                 </tbody>
             </table>
 

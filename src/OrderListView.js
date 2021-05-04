@@ -4,15 +4,13 @@ import OrderDetailView from './OrderDetailView'
 
 const OrderListView = (props) => {
     const [orders, setOrders] = useState([])
-    const [showDetail, setShowDetail] = useState(false)
-    const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
         getAllOrders().then(setOrders)
     }, [])
 
-    const toggleShowDetail = (orderId) => {
-        // props.history.push({pathname: '/' + orderId})
+    const moveToShowDetail = (orderId) => {
+        props.history.push({ pathname: '/orders/' + orderId })
     }
 
     const onChangeSearchText = (event) => {
@@ -40,7 +38,6 @@ const OrderListView = (props) => {
             <input
                 placeholder='Search order here'
                 onChange={(event) => onChangeSearchText(event)}
-                // value={searchText}
             ></input>
             <h1>Order History</h1>
             <table>
@@ -56,36 +53,37 @@ const OrderListView = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Array.isArray(orders)
-                        ? orders.map((o, idx) => {
-                              return (
-                                  <tr
-                                      key={o.id}
-                                      onClick={() => setShowDetail(true)}
-                                  >
-                                      <td>{idx}</td>
-                                      <td>{o.id}</td>
-                                      <td></td>
-                                      <td>{o.items}</td>
-                                      <td>{o.price}</td>
-                                      <td>
-                                          <button
-                                              type='button'
-                                              id={'order-detail-button-' + o.id}
-                                              onClick={() =>
-                                                  setShowDetail(true)
-                                              }
-                                          >
-                                              More
-                                          </button>
-                                      </td>
-                                  </tr>
-                              )
-                          })
-                        : null}
+                    {orders &&
+                        orders.map((order, idx) => {
+                            return (
+                                <tr
+                                    key={order.id}
+                                    onClick={() => moveToShowDetail(order.id)}
+                                >
+                                    <td>{idx}</td>
+                                    <td>{order.id}</td>
+                                    <td></td>
+                                    <td>{order.items}</td>
+                                    <td>{order.price}</td>
+                                    <td>
+                                        <button
+                                            type='button'
+                                            id={
+                                                'order-detail-button-' +
+                                                order.id
+                                            }
+                                            onClick={() =>
+                                                moveToShowDetail(order.id)
+                                            }
+                                        >
+                                            More
+                                        </button>
+                                    </td>
+                                </tr>
+                            )
+                        })}
                 </tbody>
             </table>
-            {showDetail ? <OrderDetailView /> : null}
         </div>
     )
 }

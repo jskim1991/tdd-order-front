@@ -1,17 +1,14 @@
 import OrderListView from './OrderListView'
 import OrderDetailView from './OrderDetailView'
+import { Route, Switch } from 'react-router-dom'
 
 function App() {
     return (
         <div className='App'>
-            <OrderListView />
-
-            {/* <BrowserRouter> */}
-            {/* <Switch> */}
-            {/* <Route path='/' exact component={OrderListView} /> */}
-            {/* <Route path='/:id' component={OrderDetailView} /> */}
-            {/* </Switch> */}
-            {/* </BrowserRouter> */}
+            <Switch>
+                <Route path='/' exact component={OrderListView} />
+                <Route path='/orders/:orderId' component={OrderDetailView} />
+            </Switch>
         </div>
     )
 }
