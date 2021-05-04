@@ -35,10 +35,13 @@ const OrderListView = (props) => {
 
     return (
         <div>
+            <label htmlFor='search_input'>Search items</label>
             <input
+                type='text'
+                id='search_input'
                 placeholder='Search order here'
                 onChange={(event) => onChangeSearchText(event)}
-            ></input>
+            />
             <h1>Order History</h1>
             <table>
                 <caption>Orders</caption>

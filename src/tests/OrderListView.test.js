@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import * as OrderRepository from './OrderRepository'
 import userEvent from '@testing-library/user-event'
 import { renderAppWithPath, stubPromiseResolve } from './TestingUtil'
@@ -73,9 +73,7 @@ describe('Order List View page', () => {
         it('shows a text input to search for a specific order', () => {
             renderAppWithPath('/')
 
-            expect(
-                screen.getByPlaceholderText('Search order here'),
-            ).toBeInTheDocument()
+            expect(screen.getByLabelText('Search items')).toBeInTheDocument()
         })
 
         it('shows matching orders when item name matches', () => {
