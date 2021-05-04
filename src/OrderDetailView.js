@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getOrder } from './tests/OrderRepository'
+import { getOrder } from './OrderRepository'
 
 const OrderDetailView = () => {
     const [items, setItems] = useState([])

@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import * as OrderRepository from './OrderRepository'
+import * as OrderRepository from '../OrderRepository'
 import { stubPromiseResolve, renderAppWithPath } from './TestingUtil'
 
 describe('Order Detail View page', () => {

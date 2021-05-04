@@ -1,4 +1,4 @@
-import { getAllOrders } from './tests/OrderRepository'
+import { getAllOrders } from './OrderRepository'
 import { useEffect, useState } from 'react'
 import OrderDetailView from './OrderDetailView'
 

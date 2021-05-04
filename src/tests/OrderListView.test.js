@@ -1,5 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react'
-import * as OrderRepository from './OrderRepository'
+import * as OrderRepository from '../OrderRepository'
 import userEvent from '@testing-library/user-event'
 import { renderAppWithPath, stubPromiseResolve } from './TestingUtil'
 

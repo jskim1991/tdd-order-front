@@ -1,4 +1,4 @@
-import { getAllOrders, getOrder } from './OrderRepository'
+import { getAllOrders, getOrder } from '../OrderRepository'
 import axios from 'axios'
 
 describe('OrderRepository', () => {
