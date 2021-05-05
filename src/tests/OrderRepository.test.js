@@ -21,9 +21,7 @@ describe('OrderRepository', () => {
             getAllOrders()
 
             expect(axiosGet).toHaveBeenCalled()
-            expect(axiosGet).toHaveBeenCalledWith(
-                'http://localhost:8080/orders',
-            )
+            expect(axiosGet).toHaveBeenCalledWith('/orders')
         })
     })
 
@@ -46,9 +44,7 @@ describe('OrderRepository', () => {
             getOrder('999')
 
             expect(axiosGetSpy).toHaveBeenCalled()
-            expect(axiosGetSpy).toHaveBeenCalledWith(
-                'http://localhost:8080/orders/999',
-            )
+            expect(axiosGetSpy).toHaveBeenCalledWith('/orders/999')
         })
     })
 })

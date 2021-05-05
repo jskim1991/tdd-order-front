@@ -9,7 +9,7 @@ describe('Login Repository', () => {
 
         LoginRepository.login('user@email.com', 'password')
 
-        expect(getSpy).toHaveBeenCalledWith('http://localhost:8080/login', {
+        expect(getSpy).toHaveBeenCalledWith('/login', {
             email: 'user@email.com',
             password: 'password',
         })
