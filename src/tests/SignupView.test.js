@@ -40,6 +40,6 @@ describe('For Sign Up', () => {
         userEvent.type(screen.getByLabelText('Password'), 'password')
         userEvent.click(screen.getByRole('button', { name: 'Sign Up' }))
 
-        expect(screen.getByText('Password')).toBeInTheDocument()
+        expect(screen.queryAllByText('Login').length).toBeGreaterThan(1)
     })
 })

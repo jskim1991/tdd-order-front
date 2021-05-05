@@ -21,6 +21,7 @@ const SignupView = (props) => {
 
     return (
         <div>
+            <h1>Sign Up</h1>
             <label htmlFor='email_input'>Email</label>
             <input type='text' id='email_input' onChange={onChangeEmailInput} />
             <label htmlFor='password_input'>Password</label>
