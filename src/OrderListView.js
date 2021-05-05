@@ -1,6 +1,5 @@
 import { getAllOrders } from './OrderRepository'
 import { useEffect, useState } from 'react'
-import OrderDetailView from './OrderDetailView'
 
 const OrderListView = (props) => {
     const [orders, setOrders] = useState([])
