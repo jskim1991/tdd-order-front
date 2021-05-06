@@ -1,13 +1,23 @@
 import * as LoginRepository from '../LoginRepository'
 import axios from 'axios'
 import { signup } from '../LoginRepository'
+import * as StorageWrapper from '../StorageWrapper'
 
 describe('Login Repository', () => {
     describe('For Login', () => {
+        beforeEach(() => {
+            const tokens = {
+                accessToken: 'access token',
+                refreshToken: 'refresh token',
+            }
+            jest.spyOn(axios, 'post').mockReturnValue(
+                Promise.resolve({ data: tokens }),
+            )
+            jest.spyOn(StorageWrapper, 'saveUserToken').mockReturnValue({})
+        })
+
         it('reaches to /login endpoint with a body of email and password', () => {
-            const getSpy = jest
-                .spyOn(axios, 'post')
-                .mockReturnValue(Promise.resolve({}))
+            const getSpy = jest.spyOn(axios, 'post')
 
             LoginRepository.login('user@email.com', 'password')
 
@@ -18,16 +28,23 @@ describe('Login Repository', () => {
         })
 
         it('returns an object with access token and request token', async () => {
-            const tokens = {
-                accessToken: 'access token',
-                refreshToken: 'refresh token',
-            }
-
-            jest.spyOn(axios, 'post').mockReturnValue(Promise.resolve(tokens))
-
             const obtainedTokens = await LoginRepository.login(null, null)
 
-            expect(obtainedTokens).toEqual(tokens)
+            expect(obtainedTokens).toEqual({
+                accessToken: 'access token',
+                refreshToken: 'refresh token',
+            })
+        })
+
+        it('stores token on successful login', async () => {
+            const storagePutSpy = jest.spyOn(StorageWrapper, 'saveUserToken')
+
+            await LoginRepository.login(null, null)
+
+            expect(storagePutSpy).toHaveBeenCalledWith({
+                accessToken: 'access token',
+                refreshToken: 'refresh token',
+            })
         })
     })
 
