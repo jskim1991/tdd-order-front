@@ -1,9 +1,15 @@
 import axios from 'axios'
 
 export const getAllOrders = () => {
-    return axios.get('/orders').then((response) => response.data)
+    const token = localStorage.getItem('accessToken')
+    const headers = { Authorization: 'Bearer ' + token }
+    return axios.get('/orders', { headers }).then((response) => response.data)
 }
 
 export const getOrder = (orderId) => {
-    return axios.get(`/orders/${orderId}`).then((response) => response.data)
+    const token = localStorage.getItem('accessToken')
+    const headers = { Authorization: 'Bearer ' + token }
+    return axios
+        .get(`/orders/${orderId}`, { headers })
+        .then((response) => response.data)
 }
