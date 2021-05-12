@@ -1,19 +1,13 @@
-import { useState } from 'react'
-import { login, signup } from './LoginRepository'
+import { useRef } from 'react'
+import { login } from './LoginRepository'
 
 const LoginView = (props) => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
-    const onChangeEmailInput = (event) => {
-        setEmail(event.target.value)
-    }
-
-    const onChangePasswordInput = (event) => {
-        setPassword(event.target.value)
-    }
+    const emailInputRef = useRef()
+    const passwordRef = useRef()
 
     const onSubmitLoginForm = () => {
+        const email = emailInputRef.current.value
+        const password = passwordRef.current.value
         login(email, password).then((response) => {
             props.history.push({ pathname: '/' })
         })
@@ -23,13 +17,9 @@ const LoginView = (props) => {
         <div>
             <h1>Login</h1>
             <label htmlFor='email_input'>Email</label>
-            <input type='text' id='email_input' onChange={onChangeEmailInput} />
+            <input ref={emailInputRef} type='text' id='email_input' />
             <label htmlFor='password_input'>Password</label>
-            <input
-                type='password'
-                id='password_input'
-                onChange={onChangePasswordInput}
-            />
+            <input ref={passwordRef} type='password' id='password_input' />
             <button onClick={onSubmitLoginForm}>Login</button>
         </div>
     )
